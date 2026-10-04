@@ -21,19 +21,21 @@ public sealed class FolderTools(
 
     [McpServerTool]
     [Description(
-        "Creates a new Didaro workspace for the current user.")]
+    "Creates a new Didaro workspace for the current user.")]
     public async Task<FolderResponse> CreateFolderAsync(
-        [Description("The name of the workspace.")]
-        string name,
-        [Description(
-            "An optional description of the workspace.")]
-        string? description = null,
-        CancellationToken cancellationToken = default)
+    [Description("The name of the workspace.")]
+    string name,
+    [Description(
+        "An optional description of the workspace. Omit when no description is needed.")]
+    string description = "",
+    CancellationToken cancellationToken = default)
     {
         var request = new CreateFolderRequest
         {
             Name = name,
-            Description = description
+            Description = string.IsNullOrWhiteSpace(description)
+                ? null
+                : description
         };
 
         return await folderService.CreateFolderAsync(

@@ -11,25 +11,27 @@ public sealed class LearningMaterialTools(
 {
     [McpServerTool]
     [Description(
-        "Creates a Didaro learning material from text content.")]
+    "Creates a Didaro learning material from text content.")]
     public async Task<LearningMaterialCreateResponse> CreateLearningMaterialAsync(
-        [Description(
-            "The name of the learning material.")]
-        string name,
-        [Description(
-            "The text content to save as learning material.")]
-        string text,
-        [Description(
-            "The ID of the Didaro workspace to save the learning material in.")]
-        Guid? folderId = null,
-        [Description(
-            "An optional description of the learning material.")]
-        string? description = null,
-        CancellationToken cancellationToken = default)
+    [Description(
+        "The name of the learning material.")]
+    string name,
+    [Description(
+        "The text content to save as learning material.")]
+    string text,
+    [Description(
+        "The ID of the Didaro workspace to save the learning material in. Use get_folders to find the workspace ID when needed.")]
+    Guid folderId,
+    [Description(
+        "An optional description of the learning material. Omit when no description is needed.")]
+    string description = "",
+    CancellationToken cancellationToken = default)
     {
         return await learningMaterialService.CreateAsync(
             name,
-            description,
+            string.IsNullOrWhiteSpace(description)
+                ? null
+                : description,
             text,
             folderId,
             cancellationToken);
