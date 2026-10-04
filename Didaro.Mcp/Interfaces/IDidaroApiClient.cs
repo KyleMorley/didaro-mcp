@@ -3,11 +3,36 @@ namespace Didaro.Mcp.Interfaces;
 public interface IDidaroApiClient
 {
     /// <summary>
-    /// Sends an HTTP request to the Didaro API and returns the response.
+    /// Sends an HTTP GET request to the specified endpoint and returns the response deserialized as the specified type.
     /// </summary>
-    /// <param name="request">The HTTP request message to send to the Didaro API.</param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
-    /// <returns>The HTTP response message from the Didaro API.</returns>
+    /// <typeparam name="TResponse">The type to deserialize the response into.</typeparam>
+    /// <param name="endpoint">The endpoint to send the GET request to.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The response deserialized as the specified type.</returns>
+    Task<TResponse> GetAsync<TResponse>(
+        string endpoint,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Sends an HTTP POST request to the specified endpoint with the given request body and returns the response deserialized as the specified type.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request body.</typeparam>
+    /// <typeparam name="TResponse">The type to deserialize the response into.</typeparam>
+    /// <param name="endpoint">The endpoint to send the POST request to.</param>
+    /// <param name="request">The request body to send.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The response deserialized as the specified type.</returns> 
+    Task<TResponse> PostAsync<TRequest, TResponse>(
+        string endpoint,
+        TRequest request,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Sends an HTTP request and returns the raw HTTP response.
+    /// </summary>
+    /// <param name="request">The HTTP request message to send.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The raw HTTP response message.</returns>
     Task<HttpResponseMessage> SendAsync(
         HttpRequestMessage request,
         CancellationToken cancellationToken = default);

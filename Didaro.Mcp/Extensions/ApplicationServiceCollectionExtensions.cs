@@ -38,6 +38,22 @@ public static class ApplicationServiceCollectionExtensions
             IDidaroApiClient,
             DidaroApiClient>();
 
+        services.AddScoped<
+            IFolderService,
+            FolderService>();
+
+        services.AddScoped<
+            IPracticeExamService,
+            PracticeExamService>();
+
+        services.AddScoped<
+            IRubricService,
+            RubricService>();
+
+        services.AddScoped<
+            ILearningMaterialService,
+            LearningMaterialService>();
+
         return services;
     }
 }

@@ -24,7 +24,7 @@ public sealed class DidaroApiClient(
         CancellationToken cancellationToken = default)
     {
         string subjectToken =
-            await accessTokenService.GetCurrentAsync();
+            await accessTokenService.GetCurrentAsync(cancellationToken);
 
         string accessToken =
             await tokenExchangeService.ExchangeAsync(
@@ -45,5 +45,61 @@ public sealed class DidaroApiClient(
         return await httpClient.SendAsync(
             request,
             cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task<TResponse> GetAsync<TResponse>(
+        string endpoint,
+        CancellationToken cancellationToken = default)
+    {
+        using var request =
+            new HttpRequestMessage(
+                HttpMethod.Get,
+                endpoint);
+
+        using HttpResponseMessage response =
+            await SendAsync(
+                request,
+                cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        TResponse? result =
+            await response.Content.ReadFromJsonAsync<TResponse>(
+                cancellationToken);
+
+        return result
+            ?? throw new InvalidOperationException(
+                "Didaro API returned an empty response.");
+    }
+
+    /// <inheritdoc />
+    public async Task<TResponse> PostAsync<TRequest, TResponse>(
+        string endpoint,
+        TRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        using var message =
+            new HttpRequestMessage(
+                HttpMethod.Post,
+                endpoint)
+            {
+                Content = JsonContent.Create(request)
+            };
+
+        using HttpResponseMessage response =
+            await SendAsync(
+                message,
+                cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        TResponse? result =
+            await response.Content.ReadFromJsonAsync<TResponse>(
+                cancellationToken);
+
+        return result
+            ?? throw new InvalidOperationException(
+                "Didaro API returned an empty response.");
     }
 }
