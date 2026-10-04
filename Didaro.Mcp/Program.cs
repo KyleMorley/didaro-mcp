@@ -6,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuth0Authentication(
     builder.Configuration);
 
+builder.Services.AddApplicationServices(
+    builder.Configuration);
+
 builder.Services.AddAuthorization();
 
 builder.Services
