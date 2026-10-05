@@ -9,9 +9,12 @@ namespace Didaro.Mcp.Tools;
 public sealed class RubricTools(
     IRubricService rubricService)
 {
-    [McpServerTool]
+    [McpServerTool(
+    ReadOnly = true,
+    Destructive = false,
+    OpenWorld = false)]
     [Description(
-        "Gets the rubrics saved in a Didaro workspace.")]
+    "Gets the rubrics saved in a Didaro workspace.")]
     public async Task<IReadOnlyList<RubricListItemResponse>> GetRubricsAsync(
         [Description(
             "The ID of the Didaro workspace containing the rubrics.")]

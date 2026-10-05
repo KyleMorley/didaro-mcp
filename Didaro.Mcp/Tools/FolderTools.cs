@@ -9,7 +9,10 @@ namespace Didaro.Mcp.Tools;
 public sealed class FolderTools(
     IFolderService folderService)
 {
-    [McpServerTool]
+    [McpServerTool(
+        ReadOnly = true,
+        Destructive = false,
+        OpenWorld = false)]
     [Description(
         "Gets the Didaro workspaces available to the current user.")]
     public async Task<IReadOnlyList<FolderResponse>> GetFoldersAsync(
@@ -19,16 +22,19 @@ public sealed class FolderTools(
             cancellationToken);
     }
 
-    [McpServerTool]
+    [McpServerTool(
+        ReadOnly = false,
+        Destructive = false,
+        OpenWorld = false)]
     [Description(
-    "Creates a new Didaro workspace for the current user.")]
+        "Creates a new Didaro workspace for the current user.")]
     public async Task<FolderResponse> CreateFolderAsync(
-    [Description("The name of the workspace.")]
-    string name,
-    [Description(
-        "An optional description of the workspace. Omit when no description is needed.")]
-    string description = "",
-    CancellationToken cancellationToken = default)
+        [Description("The name of the workspace.")]
+        string name,
+        [Description(
+            "An optional description of the workspace. Omit when no description is needed.")]
+        string description = "",
+        CancellationToken cancellationToken = default)
     {
         var request = new CreateFolderRequest
         {

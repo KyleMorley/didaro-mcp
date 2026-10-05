@@ -9,9 +9,12 @@ namespace Didaro.Mcp.Tools;
 public sealed class LearningMaterialTools(
     ILearningMaterialService learningMaterialService)
 {
-    [McpServerTool]
+    [McpServerTool(
+    ReadOnly = false,
+    Destructive = false,
+    OpenWorld = false)]
     [Description(
-        "Creates a Didaro learning material from text content.")]
+    "Creates a Didaro learning material from text content.")]
     public async Task<LearningMaterialCreateResponse> CreateLearningMaterialAsync(
         [Description(
             "The name of the learning material.")]
@@ -38,7 +41,10 @@ public sealed class LearningMaterialTools(
             cancellationToken);
     }
 
-    [McpServerTool]
+    [McpServerTool(
+    ReadOnly = false,
+    Destructive = false,
+    OpenWorld = false)]
     [Description(
         "Creates a Didaro learning material from a PDF file.")]
     public async Task<LearningMaterialCreateResponse> CreateLearningMaterialFromPdfAsync(

@@ -9,9 +9,12 @@ namespace Didaro.Mcp.Tools;
 public sealed class PracticeExamTools(
     IPracticeExamService practiceExamService)
 {
-    [McpServerTool]
+    [McpServerTool(
+    ReadOnly = false,
+    Destructive = false,
+    OpenWorld = false)]
     [Description(
-        "Generates a multiple-choice practice exam from supplied learning content.")]
+    "Generates a multiple-choice practice exam from supplied learning content.")]
     public async Task<PracticeExamResponse> GeneratePracticeExamAsync(
         [Description(
             "The learning content to generate the practice exam from.")]
