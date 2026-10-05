@@ -21,6 +21,21 @@ builder.Services
 
 var app = builder.Build();
 
+app.MapGet(
+    "/.well-known/openai-apps-challenge",
+    (IConfiguration configuration) =>
+    {
+        string token =
+            configuration["OpenAI:AppsChallengeToken"]
+            ?? throw new InvalidOperationException(
+                "OpenAI apps challenge token is not configured.");
+
+        return Results.Text(
+            token,
+            "text/plain");
+    })
+    .AllowAnonymous();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
